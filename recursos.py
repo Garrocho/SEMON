@@ -1,3 +1,4 @@
+# coding: utf-8
 # @author: Charles Tim Batista Garrocho
 # @contact: ctgarrocho@gmail.com
 # @copyright: (C) 2012-2012 Python Software Open Source
@@ -9,6 +10,7 @@ from email.MIMEText import MIMEText
 from email.MIMEImage import MIMEImage
 from socket import socket, AF_INET, SOCK_STREAM
 import settings
+from datetime import datetime
 
 class Email(object):
     """
@@ -49,25 +51,33 @@ class Email(object):
         self.servidorEmail.close()
 
 class Cliente:
-    
+    """
+    Esta Classe permite criar conexões com um determinado host em uma determinada porta.
+    """ 
     def __init__(self, host = settings.HOST, porta = settings.PORTA):
         self.host = host
         self.porta = porta
         self.soquete = socket(AF_INET, SOCK_STREAM)
         
     def enviarMensagem(self, mensagem):
+        """
+        Conecta a um host e porta, e envia a mensagem.
+        """
         self.soquete.connect((self.host, self.porta))
         self.soquete.send(mensagem)
         
     def receberMensagem(self, tam = 1024):
+        """
+        Recebe uma mensagem. O parametro tam pode ser definido.
+        """
         return self.soquete.recv(tam)
     
     def fecharConexao(self):
         self.soquete.close()
         
-def obterHoraAtual(self):
+def obterHoraAtual():
     """
     Retorna um literal com a hora atual para ser utilizada como nome atual da imagem.
     """
     hoje = datetime.now()
-    return '{0}-{1}-{2}-{3}-{4}-{5}.jpg'.format(hoje.day, hoje.month, hoje.year, hoje.hour, hoje.minute, hoje.second)
+    return '{0}-{1}-{2}-{3}-{4}-{5}'.format(hoje.day, hoje.month, hoje.year, hoje.hour, hoje.minute, hoje.second)

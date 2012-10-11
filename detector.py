@@ -4,12 +4,12 @@
 
 import cv2.cv as cv
 from datetime import datetime
+from sys import exit
 
 class DetectorMovimentos():
     """
     Esta classe permite a deteccao de movimentos de uma determinada webcam.
     """
-    EXECUTANDO = False
 
     def __init__(self):
         """
@@ -20,41 +20,41 @@ class DetectorMovimentos():
  
         # Obtendo a referencia da captura da webCam.
         self.webCam = cv.CaptureFromCAM(0)
-
+        
         # Obtendo a imagem atual da webCam.
         self.imagem_atual = cv.QueryFrame(self.webCam)
 
-        # Cria uma nova imagem que sera utilizada para descobrir os contornos na imagem_atual.
-        self.imagem_cinza = cv.CreateImage(cv.GetSize(self.imagem_atual), cv.IPL_DEPTH_8U, 1)
+        if self.imagem_atual is None:
+            print 'A Web Cam esta desligada. Por favor ligue-a'
+            exit()
+        else:
+		    # Cria uma nova imagem que sera utilizada para descobrir os contornos na imagem_atual.
+		    self.imagem_cinza = cv.CreateImage(cv.GetSize(self.imagem_atual), cv.IPL_DEPTH_8U, 1)
 
-        # Cria uma nova imagem que sera utilizada para converter a imagem atual em 32F.
-        self.imagem_auxiliar = cv.CreateImage(cv.GetSize(self.imagem_atual), cv.IPL_DEPTH_32F, 3)
+		    # Cria uma nova imagem que sera utilizada para converter a imagem atual em 32F.
+		    self.imagem_auxiliar = cv.CreateImage(cv.GetSize(self.imagem_atual), cv.IPL_DEPTH_32F, 3)
 
-        # Imagem sera utilizada para guardar a diferenca entre a imagem atual e anterior.
-        self.imagem_diferenca = None
+		    # Imagem sera utilizada para guardar a diferenca entre a imagem atual e anterior.
+		    self.imagem_diferenca = None
 
-        # Obtendo a area total da imagem da webCam.
-        self.area = self.imagem_atual.width * self.imagem_atual.height
-        self.area_corrente = 0
+		    # Obtendo a area total da imagem da webCam.
+		    self.area = self.imagem_atual.width * self.imagem_atual.height
+		    self.area_corrente = 0
 
-        self.imagem_diferenca = cv.CloneImage(self.imagem_atual)
-        self.imagem_anterior = cv.CloneImage(self.imagem_atual)
+		    self.imagem_diferenca = cv.CloneImage(self.imagem_atual)
+		    self.imagem_anterior = cv.CloneImage(self.imagem_atual)
 
-        # Tenho que converter a imagem_atual em 32F para poder calcular a media em "RuningAvg".
-        cv.Convert(self.imagem_atual, self.imagem_auxiliar)
+		    # Tenho que converter a imagem_atual em 32F para poder calcular a media em "RuningAvg".
+		    cv.Convert(self.imagem_atual, self.imagem_auxiliar)
 
-    def obterImagemCam(self):
-        """
-        Obtem a imagem atual da webCam.
-        """
-        return cv.QueryFrame(self.webCam)
 
-    def processaImagem(self, imagem):
+    def processaImagem(self):
         """
         Crio uma imagem cinza a partir da atual para o programa ficar mais rapido, crio uma imagem com a
         diferenca da imagem anterior e a imagem atual, e binarizo a imagem cinza para filtrar pixels pequenos.
         """
-        self.imagem_atual = cv.CloneImage(imagem)
+        # Obtendo a imagem atual da webCam.
+        self.imagem_atual = cv.QueryFrame(self.webCam)
 
         # Remove os falsos positivos.
         cv.Smooth(self.imagem_atual, self.imagem_atual)
@@ -73,6 +73,7 @@ class DetectorMovimentos():
 
         # Binariza a imagem. Para poder filtrar pixels pequenos.
         cv.Threshold(self.imagem_cinza, self.imagem_cinza, 50, 255, cv.CV_THRESH_BINARY)  
+
    
     def verificaMovimento(self):
         """
@@ -94,10 +95,3 @@ class DetectorMovimentos():
             return True
         else:
             return False
-
-    def obterHoraAtual(self):
-        """
-        Retorna um literal com a hora atual para ser utilizada como nome atual da imagem.
-        """
-        hoje = datetime.now()
-        return '{0}-{1}-{2}-{3}-{4}-{5}.jpg'.format(hoje.day, hoje.month, hoje.year, hoje.hour, hoje.minute, hoje.second)

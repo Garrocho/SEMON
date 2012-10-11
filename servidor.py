@@ -6,21 +6,30 @@
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
 from detector import DetectorMovimentos
+from recursos import obterHoraAtual, Email
 import cv2.cv as cv
 from os import remove
 import settings
+from datetime import datetime
+import time
+from getpass import getpass
 
 DETECTOR = DetectorMovimentos()
+ESTADO = settings.DETECTOR
+SENHA = getpass('Forneça a senha de {0}: '.format(settings.EMAIL))
+INTERVALO = settings.INTERVALO
+
 
 def statusMonitoramento(conexao):
     """
     Envia ao cliente o estado atual do monitoramento.
     """
     conexao.send(settings.OK_200)
-    if DETECTOR.EXECUTANDO:
+    if ESTADO:
         conexao.send(settings.EXECUTANDO)
     else:
         conexao.send(settings.PAUSADO)
+
 
 def iniciar(conexao = None):
     """
@@ -28,27 +37,24 @@ def iniciar(conexao = None):
     se ocorre diferenças nas imagens, caso ocorra, um e-mail é enviado
     ao administrador da sala de servidores.
     """
-    
-    if conexao != None:
-        conexao.send(settings.OK_200)
-    DETECTOR.EXECUTANDO = True
-    
-    while DETECTOR.EXECUTANDO:
-        imagem = DETECTOR.obterImagemCam()
-        DETECTOR.processaImagem(imagem)
-        
-        if DETECTOR.verificaMovimento():
-            print 'tem movimento'
+    tempo_atual = time.time()
+    while True:
+        while not ((tempo_atual + INTERVALO) > time.time()):
+            DETECTOR.processaImagem()
+            if ESTADO:
+                if DETECTOR.verificaMovimento():
+                    hora = obterHoraAtual()
+                    email = Email(settings.EMAIL, settings.EMAIL)
+                    cv.SaveImage('./img/{0}.jpg'.format(hora), DETECTOR.imagem_atual)
+                    email.enviarEmail('[SEMON / {0}] Alerta de Movimento'.format(hora), 'Foi detectado um movimento da sala de servidores.', './img/{0}.jpg'.format(hora), SENHA)
+            tempo_atual = time.time()
 
-            # Exibe a imagem na janela webCam e salva a imagem no diretorio corrente com nome da data e horario atual.
-            #DETECTOR.ShowImage('webCam', self.imagem_atual)
-            # cv.SaveImage(self.obterHoraAtual(), imagem)
-            
+
 def obterImagemAtual(conexao):
     """
     Envia uma imagem atual do monitoramento para o cliente.
     """
-    endereco = DETECTOR.obterHoraAtual()
+    endereco = obterHoraAtual()
     cv.SaveImage(endereco, DETECTOR.imagem_atual)
         
     imagem = open(endereco)
@@ -62,6 +68,7 @@ def obterImagemAtual(conexao):
     
     imagem.close()
     remove(endereco)
+
     
 def trataCliente(conexao, endereco):
     """
@@ -75,12 +82,13 @@ def trataCliente(conexao, endereco):
 
     # Requisição de iniciar monitoramento.
     elif requisicao == settings.INICIAR:
-        iniciar(conexao)
+        conexao.send(settings.OK_200)
+        ESTADO = True
 
     # Requisição de pausar monitoramento.
     elif requisicao == settings.PAUSAR:
         conexao.send(settings.OK_200)
-        DETECTOR.EXECUTANDO = False
+        ESTADO = False
 
     # Requisição de obter uma imagem atual do monitoramento.
     elif requisicao == settings.IMAGEM:
@@ -93,6 +101,7 @@ def trataCliente(conexao, endereco):
     # Após a requisição ser realizada, a conexão é fechada. 
     conexao.close()
 
+
 def servidor():
     """
     Abre um novo soquete servidor para tratar as novas conexões do cliente.
@@ -100,11 +109,12 @@ def servidor():
     soquete = socket(AF_INET, SOCK_STREAM)
     soquete.bind((settings.HOST, settings.PORTA))
     soquete.listen(1)
-
+    iniciar()
     # Fica aqui aguardando novas conexões.
     while True:
         # Para cada nova conexão é criado um novo processo para tratar as requisições.
         Thread(target=trataCliente, args=(soquete.accept())).start()
+
 
 if __name__== '__main__':
     Thread(target=servidor).start() 
