@@ -46,8 +46,7 @@ def statusMonitoramento(evento, janela):
     elif resposta == settings.EXECUTANDO:
         pausarMonitoramento(janela)
     else:
-        dialogoErro('Erro ao Estabelecer Conexao.', 'Nao Foi Possivel modific'
-        + 'ar o Estado do Monitoramento.\t\t\nO Servidor Esta Desligado.')
+        dialogoErro('Erro ao Estabelecer Conexao.', 'Nao Foi Possivel Modificar o Estado do Monitoramento.\t\t\nO Servidor Esta Desligad.')
 
 
 def iniciarMonitoramento(janela):
@@ -63,8 +62,7 @@ def iniciarMonitoramento(janela):
         janela.botaoIniciar.set_stock_id(Gtk.STOCK_MEDIA_PAUSE)
         janela.botaoIniciar.set_label('Pausar')
     else:
-        dialogoErro('Erro ao Iniciar o Monitoramento.', 
-        'Parece que o Servidor Nao Respondeu. Tente Novamente.')
+        dialogoErro('Erro ao Iniciar o Monitoramento.', 'Parece que o Servidor Nao Respondeu. Tente Novamente.')
 
 
 def pausarMonitoramento(janela):
@@ -80,8 +78,7 @@ def pausarMonitoramento(janela):
         janela.botaoIniciar.set_stock_id(Gtk.STOCK_MEDIA_PLAY)
         janela.botaoIniciar.set_label('Iniciar  ')
     else:
-        dialogoErro('Erro ao Pausar o Monitoramento.', 
-        'Parece que o Servidor Nao Respondeu. Tente Novamente.')
+        dialogoErro('Erro ao Pausar o Monitoramento.', 'Parece que o Servidor Nao Respondeu. Tente Novamente.')
 
 
 def limparImagemMonitoramento(evento, janela):
