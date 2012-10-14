@@ -31,7 +31,7 @@ def statusMonitoramento(conexao):
         conexao.send(settings.PAUSADO)
 
 
-def iniciar(conexao = None):
+def iniciar(conexao=None):
     """
     Inicia o monitoramento. Vai processando as imagens e verificando
     se ocorre diferenças nas imagens, caso ocorra, um e-mail é enviado
@@ -56,20 +56,20 @@ def obterImagemAtual(conexao):
     """
     endereco = obterHoraAtual()
     cv.SaveImage(endereco, DETECTOR.imagem_atual)
-        
+
     imagem = open(endereco)
     conexao.send(settings.OK_200)
-    
+
     while True:
         dados = imagem.read(512)
         if not dados:
             break
         conexao.send(dados)
-    
+
     imagem.close()
     remove(endereco)
 
-    
+
 def trataCliente(conexao, endereco):
     """
     Trata as novas requisições dos clientes.
@@ -98,7 +98,7 @@ def trataCliente(conexao, endereco):
     else:
         conexao.send(settings.NAO_AUTORIZADO_401)
 
-    # Após a requisição ser realizada, a conexão é fechada. 
+    # Após a requisição ser realizada, a conexão é fechada.
     conexao.close()
 
 
@@ -116,5 +116,5 @@ def servidor():
         Thread(target=trataCliente, args=(soquete.accept())).start()
 
 
-if __name__== '__main__':
-    Thread(target=servidor).start() 
+if __name__ == '__main__':
+    Thread(target=servidor).start()
