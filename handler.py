@@ -119,9 +119,9 @@ def salvarImagemMonitoramento(evento, janela):
     Salva a imagem atual uma escolhida pelo usuário.
     """
     diretorio = janela.janelaEscolhePasta()
-    if diretorio != None:
+    if diretorio is not None:
         copy2('img.jpg', '{0}/{1}'.format(diretorio, janela.obterHoraAtual()))
 
 
-def sairMonitoramento(evento = None):
+def sairMonitoramento(event=None):
     Gtk.main_quit()

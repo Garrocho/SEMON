@@ -6,7 +6,9 @@
 Este é o pacote do.
 """
 
+
 __version__ = '1.0'
+
 
 __all__ = [
     'detector',
@@ -15,4 +17,4 @@ __all__ = [
     'recursos',
     'servidor',
     'settings',
-    ]
+]
