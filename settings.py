@@ -10,7 +10,7 @@ PORTA = 3335
 DETECTOR = True
 
 # Defina aqui o intervalo de verificacao do monitoramento.
-INTERVALO = 10 
+INTERVALO = 10
 
 # Defina aqui o email do administrador da sala de monitoramento.
 EMAIL = 'ctgarrocho@gmail.com'
