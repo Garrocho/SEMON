@@ -15,7 +15,7 @@ import time
 from getpass import getpass
 
 DETECTOR = DetectorMovimentos()
-ESTADO = settings.DETECTOR
+DETECTOR.estado = settings.ESTADO
 SENHA = getpass('Forneça a senha de {0}: '.format(settings.EMAIL))
 INTERVALO = settings.INTERVALO
 
@@ -25,7 +25,7 @@ def statusMonitoramento(conexao):
     Envia ao cliente o estado atual do monitoramento.
     """
     conexao.send(settings.OK_200)
-    if ESTADO:
+    if DETECTOR.estado:
         conexao.send(settings.EXECUTANDO)
     else:
         conexao.send(settings.PAUSADO)
@@ -39,9 +39,11 @@ def iniciar(conexao=None):
     """
     tempo_atual = time.time()
     while True:
+        time.sleep(2)
+        DETECTOR.capturarImagemAtual()
         while not ((tempo_atual + INTERVALO) > time.time()):
             DETECTOR.processaImagem()
-            if ESTADO:
+            if DETECTOR.estado:
                 if DETECTOR.verificaMovimento():
                     hora = obterHoraAtual()
                     email = Email(settings.EMAIL, settings.EMAIL)
@@ -54,7 +56,7 @@ def obterImagemAtual(conexao):
     """
     Envia uma imagem atual do monitoramento para o cliente.
     """
-    endereco = obterHoraAtual()
+    endereco = './img/temp.jpg'
     cv.SaveImage(endereco, DETECTOR.imagem_atual)
 
     imagem = open(endereco)
@@ -74,8 +76,8 @@ def trataCliente(conexao, endereco):
     """
     Trata as novas requisições dos clientes.
     """
-    requisicao = conexao.recv(1)
-
+    requisicao = conexao.recv(settings.TAM_MSN)
+    print requisicao
     # Requisição de verificar estado do monitoramento.
     if requisicao == settings.STATUS:
         statusMonitoramento(conexao)
@@ -83,12 +85,12 @@ def trataCliente(conexao, endereco):
     # Requisição de iniciar monitoramento.
     elif requisicao == settings.INICIAR:
         conexao.send(settings.OK_200)
-        ESTADO = True
+        DETECTOR.estado = True
 
     # Requisição de pausar monitoramento.
     elif requisicao == settings.PAUSAR:
         conexao.send(settings.OK_200)
-        ESTADO = False
+        DETECTOR.estado = False
 
     # Requisição de obter uma imagem atual do monitoramento.
     elif requisicao == settings.IMAGEM:
@@ -109,7 +111,8 @@ def servidor():
     soquete = socket(AF_INET, SOCK_STREAM)
     soquete.bind((settings.HOST, settings.PORTA))
     soquete.listen(1)
-    iniciar()
+    Thread(target=iniciar).start()
+
     # Fica aqui aguardando novas conexões.
     while True:
         # Para cada nova conexão é criado um novo processo para tratar as requisições.

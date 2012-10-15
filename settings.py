@@ -4,10 +4,10 @@
 
 # Host (Ip do Servidor), PORTA (Porta do Servidor)
 HOST = 'localhost'
-PORTA = 3335
+PORTA = 3345
 
 # Defina aqui o estado inicial do monitoramento.
-DETECTOR = True
+ESTADO = True
 
 # Defina aqui o intervalo de verificacao do monitoramento.
 INTERVALO = 10
@@ -19,18 +19,20 @@ EMAIL = 'ctgarrocho@gmail.com'
 SERVIDORES = dict([('hotmail', 'smtp.live.com'), ('live', 'smtp.live.com'), ('yahoo', 'smtp.mail.yahoo.fr'), ('gmail', 'smtp.gmail.com')])
 
 # Tipo de Mensagem de Status do Monitoramento. Nao alterar.
-LIGADO = '0'
-EXECUTANDO = '1'
-PAUSADO = '2'
+EXECUTANDO = 'EXECUT'
+PAUSADO = 'PAUSAD'
 
 # Tipos de Requisicoes do Cliente. Nao alterar.
-STATUS = '0'
-INICIAR = '1'
-PAUSAR = '2'
-IMAGEM = '3'
-DESLIGAR = '4'
-CONFIGURAR = '5'
+STATUS = 'STATUS'
+INICIAR = 'INICIA'
+PAUSAR = 'PAUSAR'
+IMAGEM = 'IMAGEM'
+DESLIGAR = 'DESLIG'
+CONFIGURAR = 'CONFIG'
+
+# Tamanho das Mensagens de requisicao.
+TAM_MSN = 6
 
 # Tipos de Respostas do Servidor. Nao alterar.
-OK_200 = '0'
-NAO_AUTORIZADO_401 = '1'
+OK_200 = 'OK_200'
+NAO_AUTORIZADO_401 = 'NO_401'

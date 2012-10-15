@@ -86,28 +86,23 @@ class JanelaCliente(Gtk.Window):
         self.set_title('SEMON - Sensor de Monitoramento de Salas de Servidores')
         self.show_all()
 
-        status = verificaStatus()
-        if status == settings.LIGADO:
-            cliente = Cliente()
+        cliente = Cliente()
+        if cliente.conectaServidor():
             cliente.enviarMensagem(settings.STATUS)
 
             # Obtem o estado do monitoramento.
-            if cliente.receberMensagem(1) == settings.OK_200:
-                status = cliente.receberMensagem(1)
-            else:
-                status = settings.OK_200
-
-            cliente.fecharConexao()
-            self.botaoObterImagem.set_sensitive(True)
-            if status == settings.EXECUTANDO:
-                self.status_bar.push(self.context_id, ' Monitoramento Iniciado')
-                self.botaoIniciar.set_stock_id(Gtk.STOCK_MEDIA_PAUSE)
-                self.botaoIniciar.set_label('Pausar')
-            elif status == settings.PAUSADO:
-                self.status_bar.push(self.context_id, ' Monitoramento Pausado')
-            else:
-                self.botaoObterImagem.set_sensitive(False)
-                self.status_bar.push(self.context_id, ' Monitoramento Desligado')
+            if cliente.receberMensagem(settings.TAM_MSN) == settings.OK_200:
+                resposta = cliente.receberMensagem(settings.TAM_MSN)
+                self.botaoObterImagem.set_sensitive(True)
+                if resposta == settings.EXECUTANDO:
+                    self.status_bar.push(self.context_id, ' Monitoramento Iniciado')
+                    self.botaoIniciar.set_stock_id(Gtk.STOCK_MEDIA_PAUSE)
+                    self.botaoIniciar.set_label('Pausar')
+                elif resposta == settings.PAUSADO:
+                    self.status_bar.push(self.context_id, ' Monitoramento Pausado')
+        else:
+            self.botaoObterImagem.set_sensitive(False)
+            self.status_bar.push(self.context_id, ' Monitoramento Desligado')
 
     def janelaEscolhePasta(self):
         """

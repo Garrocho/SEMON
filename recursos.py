@@ -8,7 +8,7 @@ from re import findall
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEImage import MIMEImage
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, error
 import settings
 from datetime import datetime
 
@@ -22,7 +22,6 @@ class Email(object):
         """
         O construtor cria o e-mail e adiciona no cabecalho do e-mail o remetente e o destinatario.
         """
-
         self.remetente = remetente
         self.destinatario = destinatario
         self.email = MIMEMultipart('related')
@@ -35,7 +34,6 @@ class Email(object):
         """
         Envia o e-mail. Recebe como argumento titulo, texto e o endereco da imagem que sera anexada no corpo da mensagem.
         """
-
         self.corpoMensagem.attach(MIMEText(texto))
         self.email['Subject'] = titulo
         self.email.attach(self.corpoMensagem)
@@ -62,21 +60,28 @@ class Cliente:
     def __init__(self, host=settings.HOST, porta=settings.PORTA):
         self.host = host
         self.porta = porta
-        self.soquete = socket(AF_INET, SOCK_STREAM)
+        
+    def conectaServidor(self):
+        """
+        Retorna o estado da conexão do servidor.
+        """
+        try:
+            self.soquete = socket(AF_INET, SOCK_STREAM)
+            self.soquete.connect((self.host, self.porta))
+            return True
+        except error, msg:
+            return False
 
     def enviarMensagem(self, mensagem):
         """
         Conecta a um host e porta, e envia a mensagem.
         """
-
-        self.soquete.connect((self.host, self.porta))
         self.soquete.send(mensagem)
 
     def receberMensagem(self, tam=1024):
         """
         Recebe uma mensagem. O parametro tam pode ser definido.
         """
-
         return self.soquete.recv(tam)
 
     def fecharConexao(self):

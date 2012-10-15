@@ -16,9 +16,8 @@ class DetectorMovimentos():
         """
         O construtor obtem a referencia da webcam e cria uma janela para exibir as imagens.
         """
-
-        # Criando uma janela com o nome de "webCam". Sera utilizada para exibir as imagens da webCam.
-        cv.NamedWindow('webCam')
+        # Variavel que vai definir o estado do monitoramento.
+        self.estado = True
 
         # Obtendo a referencia da captura da webCam.
         self.webCam = cv.CaptureFromCAM(0)
@@ -49,15 +48,17 @@ class DetectorMovimentos():
             # Tenho que converter a imagem_atual em 32F para poder calcular a media em "RuningAvg".
             cv.Convert(self.imagem_atual, self.imagem_auxiliar)
 
+    def capturarImagemAtual(self):
+        """
+        Obtem a imagem atual da webCam.
+        """
+        self.imagem_atual = cv.QueryFrame(self.webCam)
+
     def processaImagem(self):
         """
         Crio uma imagem cinza a partir da atual para o programa ficar mais rapido, crio uma imagem com a
         diferenca da imagem anterior e a imagem atual, e binarizo a imagem cinza para filtrar pixels pequenos.
         """
-
-        # Obtendo a imagem atual da webCam.
-        self.imagem_atual = cv.QueryFrame(self.webCam)
-
         # Remove os falsos positivos.
         cv.Smooth(self.imagem_atual, self.imagem_atual)
 
@@ -81,7 +82,6 @@ class DetectorMovimentos():
         Obtem os contornos da imagem cinza e soma a area deles para verificar se ouve diferenca.
         Caso a soma da area dos contornos seja maior que o "0" retorna True, caso contrario False.
         """
-
         # Encontra os contornos dos objetos na imagem cinza.
         contornos = cv.FindContours(self.imagem_cinza, cv.CreateMemStorage(0))
 
