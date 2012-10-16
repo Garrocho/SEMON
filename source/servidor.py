@@ -57,7 +57,9 @@ def iniciar(conexao=None):
     while True:
         time.sleep(settings.CAPTURAR)
         DETECTOR.capturarImagemAtual()
+        print 'to fora'
         while not ((tempo_atual + settings.INTERVALO) > time.time()):
+            print 'to processando'
             DETECTOR.processaImagem()
             if DETECTOR.estado:
                 if DETECTOR.verificaMovimento():
@@ -65,6 +67,7 @@ def iniciar(conexao=None):
                     email = Email(settings.EMAIL, settings.EMAIL)
                     cv.SaveImage('./img/{0}.jpg'.format(hora), DETECTOR.imagem_atual)
                     email.enviarEmail('[SEMON / {0}] Alerta de Movimento'.format(hora), 'Foi detectado um movimento na sala de servidores.', './img/{0}.jpg'.format(hora), SENHA)
+                    remove('./img/{0}.jpg'.format(hora))
             tempo_atual = time.time()
 
 
