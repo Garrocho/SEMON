@@ -7,7 +7,7 @@ HOST = 'localhost'
 PORTA = 4444
 
 # Defina aqui o estado inicial do monitoramento.
-ESTADO = False 
+ESTADO = False
 
 # Defina aqui o intervalo de verificacao do monitoramento.
 INTERVALO = 10

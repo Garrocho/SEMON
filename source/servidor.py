@@ -21,6 +21,7 @@ DETECTOR = DetectorMovimentos()
 DETECTOR.estado = settings.ESTADO
 SENHA = getpass('Forneça a senha de {0}: '.format(settings.EMAIL))
 
+
 def statusMonitoramento(conexao):
     """
     Envia ao cliente o estado atual do monitoramento.
@@ -30,6 +31,7 @@ def statusMonitoramento(conexao):
         conexao.send(settings.EXECUTANDO)
     else:
         conexao.send(settings.PAUSADO)
+
 
 def login(conexao):
     """

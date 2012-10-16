@@ -121,17 +121,18 @@ class JanelaCliente(Gtk.Window):
         dialogo.destroy()
         return resposta
 
+
 class JanelaLogar(Gtk.Window):
 
     def __init__(self, evento=None):
         from handler import logarMonitoramento
         Gtk.Window.__init__(self)
         self.set_icon_from_file("./img/logo2.png")
-        
-        painel = Gtk.Box(orientation = Gtk.Orientation.VERTICAL, spacing=2)
+
+        painel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
         self.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(1.0, 1.0, 1.0, 1.0))
         self.add(painel)
-        
+
         tbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         vbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
         hbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
@@ -146,29 +147,29 @@ class JanelaLogar(Gtk.Window):
 
         self.labelEmail = Gtk.Label('  E-Mail')
         vbox.pack_start(self.labelEmail, True, False, 0)
-        
+
         self.entryEmail = Gtk.Entry()
         self.entryEmail.set_size_request(200, 30)
         self.entryEmail.set_tooltip_text('Forneca o e-mail do monitoramento.')
         vbox.pack_start(self.entryEmail, True, False, 0)
-        
+
         painel.pack_start(vbox, True, False, 0)
-        
+
         self.labelSenha = Gtk.Label('  Senha')
         hbox.pack_start(self.labelSenha, True, False, 0)
-        
+
         self.entrySenha = Gtk.Entry()
         self.entrySenha.set_visibility(False)
         self.entrySenha.set_tooltip_text('Forneca a senha do seu endereco de e-mail.')
         self.entrySenha.set_size_request(200, 30)
         hbox.pack_start(self.entrySenha, True, False, 0)
-        
+
         painel.pack_start(hbox, True, False, 0)
-        
+
         self.botaoCancelar = Gtk.Button('Cancelar')
         zbox.pack_start(self.botaoCancelar, True, False, 0)
         self.botaoCancelar.set_size_request(110, 40)
-        
+
         self.botaoLogar = Gtk.Button('Logar')
         zbox.pack_start(self.botaoLogar, True, False, 0)
         self.botaoLogar.set_size_request(110, 40)
@@ -178,9 +179,9 @@ class JanelaLogar(Gtk.Window):
         self.botaoLogar.connect('clicked', logarMonitoramento, self)
         self.entryEmail.connect('activate', logarMonitoramento, self)
         self.entrySenha.connect('activate', logarMonitoramento, self)
-        
+
         painel.pack_start(zbox, True, False, 0)
-        
+
         self.set_modal(True)
         self.set_resizable(False)
         self.connect('delete_event', Gtk.main_quit)
@@ -188,7 +189,7 @@ class JanelaLogar(Gtk.Window):
         self.set_position(Gtk.WindowPosition.CENTER)
         self.set_title('SEMON - Login')
         self.show_all()
-        
+
 
 def dialogoErro(janela, mensagem1, mensagem2):
     """

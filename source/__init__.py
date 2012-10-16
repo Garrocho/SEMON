@@ -3,7 +3,7 @@
 # @copyright: (C) 2012-2012 Python Software Open Source
 
 """
-Este é o pacote do Sensor de Monitoramento de Salas de Servidores.
+Este é o pacote do.
 """
 
 

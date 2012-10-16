@@ -88,7 +88,6 @@ def obterImagemMonitoramento(evento, janela):
         dialogoErro(janela, 'Erro ao Estabelecer Conexao.', 'Nao Foi Possivel Modificar o Estado do Monitoramento.\t\t\nO Servidor Esta Desligado.')
 
 
-
 def salvarImagemMonitoramento(evento, janela):
     """
     Salva a imagem atual em uma pasta escolhida pelo usuário.

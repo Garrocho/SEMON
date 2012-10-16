@@ -60,7 +60,7 @@ class Cliente:
     def __init__(self, host=settings.HOST, porta=settings.PORTA):
         self.host = host
         self.porta = porta
-        
+
     def conectaServidor(self):
         """
         Retorna o estado da conexão do servidor.
