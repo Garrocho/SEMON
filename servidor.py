@@ -1,0 +1,123 @@
+# coding: utf-8
+# @author: Charles Tim Batista Garrocho
+# @contact: ctgarrocho@gmail.com
+# @copyright: (C) 2012-2012 Python Software Open Source
+
+from socket import socket, AF_INET, SOCK_STREAM
+from threading import Thread
+from detector import DetectorMovimentos
+from recursos import obterHoraAtual, Email
+import cv2.cv as cv
+from os import remove
+import settings
+from datetime import datetime
+import time
+from getpass import getpass
+
+DETECTOR = DetectorMovimentos()
+DETECTOR.estado = settings.ESTADO
+SENHA = getpass('Forneça a senha de {0}: '.format(settings.EMAIL))
+INTERVALO = settings.INTERVALO
+
+
+def statusMonitoramento(conexao):
+    """
+    Envia ao cliente o estado atual do monitoramento.
+    """
+    conexao.send(settings.OK_200)
+    if DETECTOR.estado:
+        conexao.send(settings.EXECUTANDO)
+    else:
+        conexao.send(settings.PAUSADO)
+
+
+def iniciar(conexao=None):
+    """
+    Inicia o monitoramento. Vai processando as imagens e verificando
+    se ocorre diferenças nas imagens, caso ocorra, um e-mail é enviado
+    ao administrador da sala de servidores.
+    """
+    tempo_atual = time.time()
+    while True:
+        time.sleep(2)
+        DETECTOR.capturarImagemAtual()
+        while not ((tempo_atual + INTERVALO) > time.time()):
+            DETECTOR.processaImagem()
+            if DETECTOR.estado:
+                if DETECTOR.verificaMovimento():
+                    hora = obterHoraAtual()
+                    email = Email(settings.EMAIL, settings.EMAIL)
+                    cv.SaveImage('./img/{0}.jpg'.format(hora), DETECTOR.imagem_atual)
+                    email.enviarEmail('[SEMON / {0}] Alerta de Movimento'.format(hora), 'Foi detectado um movimento da sala de servidores.', './img/{0}.jpg'.format(hora), SENHA)
+            tempo_atual = time.time()
+
+
+def obterImagemAtual(conexao):
+    """
+    Envia uma imagem atual do monitoramento para o cliente.
+    """
+    endereco = './img/temp.jpg'
+    cv.SaveImage(endereco, DETECTOR.imagem_atual)
+
+    imagem = open(endereco)
+    conexao.send(settings.OK_200)
+
+    while True:
+        dados = imagem.read(512)
+        if not dados:
+            break
+        conexao.send(dados)
+
+    imagem.close()
+    remove(endereco)
+
+
+def trataCliente(conexao, endereco):
+    """
+    Trata as novas requisições dos clientes.
+    """
+    requisicao = conexao.recv(settings.TAM_MSN)
+    print requisicao
+    # Requisição de verificar estado do monitoramento.
+    if requisicao == settings.STATUS:
+        statusMonitoramento(conexao)
+
+    # Requisição de iniciar monitoramento.
+    elif requisicao == settings.INICIAR:
+        conexao.send(settings.OK_200)
+        DETECTOR.estado = True
+
+    # Requisição de pausar monitoramento.
+    elif requisicao == settings.PAUSAR:
+        conexao.send(settings.OK_200)
+        DETECTOR.estado = False
+
+    # Requisição de obter uma imagem atual do monitoramento.
+    elif requisicao == settings.IMAGEM:
+        obterImagemAtual(conexao)
+
+    # Requisição não autorizada.
+    else:
+        conexao.send(settings.NAO_AUTORIZADO_401)
+
+    # Após a requisição ser realizada, a conexão é fechada.
+    conexao.close()
+
+
+def servidor():
+    """
+    Abre um novo soquete servidor para tratar as novas conexões do cliente.
+    """
+    soquete = socket(AF_INET, SOCK_STREAM)
+    soquete.bind((settings.HOST, settings.PORTA))
+    soquete.listen(1)
+    Thread(target=iniciar).start()
+
+    # Fica aqui aguardando novas conexões.
+    while True:
+        # Para cada nova conexão é criado um novo processo para tratar as requisições.
+        Thread(target=trataCliente, args=(soquete.accept())).start()
+
+
+if __name__ == '__main__':
+    Thread(target=servidor).start()
