@@ -5,3 +5,8 @@ Ele realiza o monitoramento de uma determinada sala. Quando verificado um movime
 
 ### Desenvolvedores: ###
 1. Charles Tim Garrocho
+
+# Wiki do Projeto #
+Contém a instalação e configuração do projeto.
+
+https://github.com/CharlesGarrocho/SEMON/wiki
