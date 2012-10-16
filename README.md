@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Introdução #
 O _SEMON_ é um open-source desenvolvido em Python.
 
@@ -6,9 +5,3 @@ Ele realiza o monitoramento de uma determinada sala. Quando verificado um movime
 
 ### Desenvolvedores: ###
 1. Charles Tim Garrocho
-=======
-SEMON
-=====
-
-Sensor de Monitoramento de Salas de Servidores
->>>>>>> 621c6e99d8744d25689a09f27ddb2b318c81609d
