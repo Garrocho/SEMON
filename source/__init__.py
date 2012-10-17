@@ -3,11 +3,11 @@
 # @copyright: (C) 2012-2012 Python Software Open Source
 
 """
-Este é o pacote do.
+Este é o pacote do projeto SEMON.
 """
 
 
-__version__ = '1.0'
+__version__ = '0.1D.1'
 
 
 __all__ = [
