@@ -17,8 +17,9 @@ except:
 
 class JanelaCliente(Gtk.Window):
     """
-    Cria uma interface para o cliente.
+    Cria uma interface que possibilita interacoes com o servidor.
     """
+
     def __init__(self):
         from handler import limparImagemMonitoramento, statusMonitoramento, obterImagemMonitoramento, salvarImagemMonitoramento
         super(JanelaCliente, self).__init__()
@@ -123,6 +124,9 @@ class JanelaCliente(Gtk.Window):
 
 
 class JanelaLogar(Gtk.Window):
+    """
+    Cria uma interface que possibilita o login do cliente.
+    """
 
     def __init__(self, evento=None):
         from handler import logarMonitoramento

@@ -16,6 +16,7 @@ import time
 import cv2.cv as cv
 import bz2
 import smtplib
+from sys import stderr
 
 DETECTOR = DetectorMovimentos()
 DETECTOR.estado = settings.ESTADO
@@ -57,9 +58,7 @@ def iniciar(conexao=None):
     while True:
         time.sleep(settings.CAPTURAR)
         DETECTOR.capturarImagemAtual()
-        print 'to fora'
         while not ((tempo_atual + settings.INTERVALO) > time.time()):
-            print 'to processando'
             DETECTOR.processaImagem()
             if DETECTOR.estado:
                 if DETECTOR.verificaMovimento():
@@ -152,4 +151,4 @@ if __name__ == '__main__':
         email.close()
         Thread(target=servidor).start()
     except smtplib.SMTPAuthenticationError:
-        print 'Senha invalida de {0}'.format(settings.EMAIL)
+        stderr.write('Senha inválida de {0}\n'.format(settings.EMAIL))

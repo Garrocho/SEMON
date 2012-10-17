@@ -4,16 +4,16 @@
 
 # Host (Ip do Servidor), PORTA (Porta do Servidor)
 HOST = 'localhost'
-PORTA = 4444
+PORTA = 7777
 
 # Defina aqui o estado inicial do monitoramento.
 ESTADO = False
 
 # Defina aqui o intervalo de verificacao do monitoramento.
-INTERVALO = 10
+INTERVALO = 5
 
 # Defina aqui o intervalo de capturar imagem do monitoramento.
-CAPTURAR = 2
+CAPTURAR = 1
 
 # Defina aqui o email do administrador da sala de monitoramento.
 EMAIL = 'ctgarrocho@gmail.com'

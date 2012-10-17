@@ -3,7 +3,7 @@
 # @copyright: (C) 2012-2012 Python Software Open Source
 
 from datetime import datetime
-from sys import exit
+from sys import exit, stderr
 import cv2.cv as cv
 
 
@@ -26,7 +26,7 @@ class DetectorMovimentos():
         self.imagem_atual = cv.QueryFrame(self.webCam)
 
         if self.imagem_atual is None:
-            print 'A Web Cam esta desligada. Por favor ligue-a'
+            stderr.write('A Web Cam esta desligada. Por favor ligue-a\n')
             exit()
         else:
             # Cria uma nova imagem que sera utilizada para descobrir os contornos na imagem_atual.
