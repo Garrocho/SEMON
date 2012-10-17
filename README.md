@@ -6,7 +6,16 @@ Ele realiza o monitoramento de uma determinada sala. Quando verificado um movime
 ### Desenvolvedores: ###
 1. Charles Tim Garrocho
 
-# Wiki do Projeto #
+## Wiki do Projeto #
 Contém a instalação e configuração do projeto.
 
 https://github.com/CharlesGarrocho/SEMON/wiki
+
+## Screenshots
+Tela Login:
+
+![alt text](http://i.imm.io/IiBV.png "Tela Login")
+
+Tela Cliente:
+
+![alt text](http://i.imm.io/IiEQ.png "Tela Cliente")
