@@ -1,7 +1,7 @@
 # coding: utf-8
 # @author: Charles Tim Batista Garrocho
-# @contact: ctgarrocho@gmail.com
-# @copyright: (C) 2012-2012 Python Software Open Source
+# @contact: charles.garrocho@gmail.com
+# @copyright: (C) 2012-2013 Python Software Open Source
 
 from socket import socket, AF_INET, SOCK_STREAM
 from threading import Thread
@@ -64,9 +64,9 @@ def iniciar(conexao=None):
                 if DETECTOR.verificaMovimento():
                     hora = obterHoraAtual()
                     email = Email(settings.EMAIL, settings.EMAIL)
-                    cv.SaveImage('./img/{0}.jpg'.format(hora), DETECTOR.imagem_atual)
+                    cv.SaveImage('../imagens/{0}.jpg'.format(hora), DETECTOR.imagem_atual)
                     email.enviarEmail('[SEMON / {0}] Alerta de Movimento'.format(hora), 'Foi detectado um movimento na sala de servidores.', './img/{0}.jpg'.format(hora), SENHA)
-                    remove('./img/{0}.jpg'.format(hora))
+                    remove('../imagens/{0}.jpg'.format(hora))
             tempo_atual = time.time()
 
 
@@ -74,7 +74,7 @@ def obterImagemAtual(conexao):
     """
     Envia uma imagem atual do monitoramento para o cliente.
     """
-    endereco = './img/temp.jpg'
+    endereco = '../imagens/temp.jpg'
     cv.SaveImage(endereco, DETECTOR.imagem_atual)
 
     imagem = open(endereco)

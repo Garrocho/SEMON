@@ -1,7 +1,7 @@
 # coding: utf-8
 # @author: Charles Tim Batista Garrocho
-# @contact: ctgarrocho@gmail.com
-# @copyright: (C) 2012-2012 Python Software Open Source
+# @contact: charles.garrocho@gmail.com
+# @copyright: (C) 2012-2013 Python Software Open Source
 
 from smtplib import SMTP
 from re import findall

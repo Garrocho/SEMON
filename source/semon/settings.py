@@ -1,6 +1,6 @@
 # @author: Charles Tim Batista Garrocho
-# @contact: ctgarrocho@gmail.com
-# @copyright: (C) 2012-2012 Python Software Open Source
+# @contact: charles.garrocho@gmail.com
+# @copyright: (C) 2012-2013 Python Software Open Source
 
 # Host (Ip do Servidor), PORTA (Porta do Servidor)
 HOST = 'localhost'
@@ -16,7 +16,7 @@ INTERVALO = 5
 CAPTURAR = 1
 
 # Defina aqui o email do administrador da sala de monitoramento.
-EMAIL = 'ctgarrocho@gmail.com'
+EMAIL = 'charles.garrocho@gmail.com'
 
 # Servidores de E-mail
 SERVIDORES = dict([('hotmail', 'smtp.live.com'), ('live', 'smtp.live.com'), ('yahoo', 'smtp.mail.yahoo.fr'), ('gmail', 'smtp.gmail.com')])

@@ -1,7 +1,7 @@
 # coding: utf-8
 # @author: Charles Tim Batista Garrocho
-# @contact: ctgarrocho@gmail.com
-# @copyright: (C) 2012-2012 Python Software Open Source
+# @contact: charles.garrocho@gmail.com
+# @copyright: (C) 2012-2013 Python Software Open Source
 
 from gi.repository import Gtk, Gdk
 from datetime import datetime
@@ -28,9 +28,9 @@ class JanelaCliente(Gtk.Window):
         self.layout = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.painelCentro = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
         self.webCam = Gtk.Image()
-        self.webCam.set_from_file('./img/default.jpg')
+        self.webCam.set_from_file('../imagens/default.jpg')
 
-        self.set_icon_from_file("./img/logo2.png")
+        self.set_icon_from_file("../imagens/logo2.png")
 
         self.status_bar = Gtk.Statusbar()
         self.context_id = self.status_bar.get_context_id('status')
@@ -131,7 +131,7 @@ class JanelaLogar(Gtk.Window):
     def __init__(self, evento=None):
         from handler import logarMonitoramento
         Gtk.Window.__init__(self)
-        self.set_icon_from_file("./img/logo2.png")
+        self.set_icon_from_file("../imagens/logo2.png")
 
         painel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=2)
         self.override_background_color(Gtk.StateFlags.NORMAL, Gdk.RGBA(1.0, 1.0, 1.0, 1.0))
@@ -144,7 +144,7 @@ class JanelaLogar(Gtk.Window):
         zbox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
         self.logo = Gtk.Image()
-        self.logo.set_from_file('./img/logo1.png')
+        self.logo.set_from_file('../imagens/logo1.png')
 
         tbox.pack_start(self.logo, True, True, 0)
         painel.pack_start(tbox, True, False, 0)
