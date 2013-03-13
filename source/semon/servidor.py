@@ -65,7 +65,7 @@ def iniciar(conexao=None):
                     hora = obterHoraAtual()
                     email = Email(settings.EMAIL, settings.EMAIL)
                     cv.SaveImage('../imagens/{0}.jpg'.format(hora), DETECTOR.imagem_atual)
-                    email.enviarEmail('[SEMON / {0}] Alerta de Movimento'.format(hora), 'Foi detectado um movimento na sala de servidores.', './img/{0}.jpg'.format(hora), SENHA)
+                    email.enviarEmail('[SEMON / {0}] Alerta de Movimento'.format(hora), 'Foi detectado um movimento na sala de servidores.', '../imagens/{0}.jpg'.format(hora), SENHA)
                     remove('../imagens/{0}.jpg'.format(hora))
             tempo_atual = time.time()
 

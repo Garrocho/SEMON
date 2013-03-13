@@ -19,8 +19,12 @@ https://github.com/CharlesGarrocho/SEMON/wiki
 ## Screenshots #
 ### Tela de Login:
 
-![alt text](https://raw.github.com/CharlesGarrocho/SEMON/master/samples/tela_login.png "Tela Login")
+![alt text](https://raw.github.com/CharlesGarrocho/SEMON/master/samples/tela_login.png "Tela de Login")
 
-### Tela do Cliente:
+### Tela de Monitoramento:
 
-![alt text](https://raw.github.com/CharlesGarrocho/SEMON/master/samples/tela_cliente.png "Tela Cliente")
+![alt text](https://raw.github.com/CharlesGarrocho/SEMON/master/samples/tela_monitoramento.png "Tela de Monitoramento")
+
+### Alerta de Movimento no e-mail:
+
+![alt text](https://raw.github.com/CharlesGarrocho/SEMON/master/samples/tela_email.png "Alerta de Movimento")
