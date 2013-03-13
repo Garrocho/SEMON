@@ -8,7 +8,7 @@ O _SEMON_ é um software open-source desenvolvido com a linguagem de programaç�
 ## Características #
 O _SEMON_ realiza o monitoramento de uma determinada sala. Quando verificado um movimento no ambiente, é enviado um e-mail para o administrador da sala com a imagem que aconteceu o movimento. Ele também é ajustado para não dar falsos positivos. O _SEMON_ tem a opção de poder pausar e obter uma foto do ambiente no momento, remotamente.
 
-## Desenvolvedores: #
+## Desenvolvedor #
 Charles Tim Batista Garrocho
 
 ## Wiki do Projeto #
@@ -17,10 +17,10 @@ Contém a instalação e configuração do projeto.
 https://github.com/CharlesGarrocho/SEMON/wiki
 
 ## Screenshots #
-### Tela Login:
+### Tela de Login:
 
-![alt text](https://raw.github.com/CharlesGarrocho/SEMON/master/samples/login.png "Tela Login")
+![alt text](https://raw.github.com/CharlesGarrocho/SEMON/master/samples/tela_login.png "Tela Login")
 
-### Tela Cliente:
+### Tela do Cliente:
 
-![alt text](https://raw.github.com/CharlesGarrocho/SEMON/master/samples/cliente.png "Tela Cliente")
+![alt text](https://raw.github.com/CharlesGarrocho/SEMON/master/samples/tela_cliente.png "Tela Cliente")
