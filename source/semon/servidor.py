@@ -3,7 +3,7 @@
 # @contact: charles.garrocho@gmail.com
 # @copyright: (C) 2012-2013 Python Software Open Source
 
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from threading import Thread
 from detector import DetectorMovimentos
 from datetime import datetime
@@ -14,7 +14,6 @@ from os import remove
 import settings
 import time
 import cv2.cv as cv
-import bz2
 import smtplib
 from sys import stderr
 
@@ -27,7 +26,6 @@ def statusMonitoramento(conexao):
     """
     Envia ao cliente o estado atual do monitoramento.
     """
-    conexao.send(settings.OK_200)
     if DETECTOR.estado:
         conexao.send(settings.EXECUTANDO)
     else:
@@ -38,9 +36,7 @@ def login(conexao):
     """
     Verifica o login do cliente.
     """
-    conexao.send(settings.OK_200)
     login = conexao.recv(1024)
-    login = bz2.decompress(login)
     login = login.split('==0#_6_#0==')
     if login[0] == settings.EMAIL and login[1] == SENHA:
         conexao.send(settings.OK_200)
@@ -76,9 +72,7 @@ def obterImagemAtual(conexao):
     """
     endereco = '../imagens/temp.jpg'
     cv.SaveImage(endereco, DETECTOR.imagem_atual)
-
     imagem = open(endereco)
-    conexao.send(settings.OK_200)
 
     while True:
         dados = imagem.read(512)
@@ -131,6 +125,7 @@ def servidor():
     Abre um novo soquete servidor para tratar as novas conexões do cliente.
     """
     soquete = socket(AF_INET, SOCK_STREAM)
+    soquete.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
     soquete.bind((settings.HOST, settings.PORTA))
     soquete.listen(1)
     Thread(target=iniciar).start()
